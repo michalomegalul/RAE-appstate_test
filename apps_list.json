@@ -29,3 +29,4 @@
 {"iteration": 23, "apps_list": ["id type status started at stopped at 99f36f35-c825-4893-8972-1 provision Runnin 2023-10-23T08:43: 2023-10-23T08:43: 47908ff3f0 ng 1.890Z 2.103Z"]}
 {"iteration": 24, "apps_list": ["id type status started at stopped at 680e2de7-5de2-4e98-bd0a-0 provision Stoppe 2023-10-23T08:43: 2023-10-23T08:43: d9d3e3a7f0 ng 2.074Z 2.320Z"]}
 {"iteration": 25, "apps_list": ["id type status started at stopped at e0a0972e-6e00-4cf7-80aa-2 provision Stoppe 2023-10-23T08:43: 2023-10-23T08:43: 72a75a6068 ng 1.855Z 2.014Z"]}
+{"iteration": 1, "apps_list": ["id type status started at stopped at b13e35a4-d088-43c5-8ef8-8 provision Runnin 2023-10-23T08:43: 2023-10-23T08:43: 27af4354f0 ng 1.228Z 1.818Z"]}

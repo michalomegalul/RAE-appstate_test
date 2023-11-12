@@ -6,7 +6,7 @@ import sys
 import json
 import re
 
-# Constants
+
 SSH_HOST = "192.168.197.55"
 SSH_USERNAME = "root"
 RESET_COMMAND = "factory-reset"
@@ -18,7 +18,6 @@ SSH_TIMEOUT = 10
 REBOOT_WAIT_TIME = 150
 
 sys.stdout.reconfigure(encoding='utf-8')
-
 def is_host_online(host, port=SSH_PORT, timeout=SSH_TIMEOUT):
      """Check if SSH port is open."""
      try:
@@ -53,7 +52,7 @@ def execute_ssh_command(host, username, command):
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(hostname=host, username=username, password="", banner_timeout=200)
-        stdin, stdout, stderr = ssh.exec_command(command)
+        stdout, stderr = ssh.exec_command(command)
         output = stdout.read().decode('utf-8')
         error = stderr.read().decode('utf-8')
         ssh.close()
@@ -76,23 +75,25 @@ def main():
                 print(f"Iteration {i + 1}")
 
                 # Execute LIST_APPS_COMMAND
-                response, error = execute_ssh_command(SSH_HOST, SSH_USERNAME, "", LIST_APPS_COMMAND)
+                response, error = execute_ssh_command(SSH_HOST, SSH_USERNAME, LIST_APPS_COMMAND)
                 clean_response = parse_string(response)
                 data = extract_data(clean_response)
-                if error:
-                    raise RuntimeError(f"SSH Command Error: {error}")
+                
 
                 print(data)
 
-                # Convert data to a dictionary and write to file
+                # Convert data to a dictionary
                 app_details_dict = {"iteration": i + 1, "apps_list": data}
+                #write to file
                 with open(OUTPUT_FILE, 'a', encoding='utf-8') as json_file:
                     json.dump(app_details_dict, json_file, ensure_ascii=False)
                     json_file.write("\n")
 
                 # Execute RESET_COMMAND
-                execute_ssh_command(SSH_HOST, SSH_USERNAME, "", RESET_COMMAND)
-
+                error = execute_ssh_command(SSH_HOST, SSH_USERNAME, RESET_COMMAND)
+                if error:
+                    raise RuntimeError(f"SSH Command Error: {error}")
+                
                 # Wait for host
                 print("Waiting for the device to come back online.")
                 time.sleep(REBOOT_WAIT_TIME)
@@ -102,6 +103,4 @@ def main():
             print(error)
     else:
         print("Device is not online")
-
-if __name__ == "__main__":
-    main()
+main()
